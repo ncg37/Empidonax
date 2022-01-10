@@ -21,10 +21,6 @@ fastqc  10223_3270_86377_HFWF7BGX9_9_GATCAG_R1.fastq.gz &
 fastqc  10223_3270_86377_HFWF7BGX9_9_GATCAG_R2.fastq.gz &
 fastqc  10223_3270_86378_HFWF7BGX9_10_TAGCTT_R1.fastq.gz &
 fastqc  10223_3270_86378_HFWF7BGX9_10_TAGCTT_R2.fastq.gz &
-fastqc  10223_3270_86379_HFWF7BGX9_11_GGCTAC_R1.fastq.gz &
-fastqc  10223_3270_86379_HFWF7BGX9_11_GGCTAC_R2.fastq.gz &
-fastqc  10223_3270_86380_HFWF7BGX9_12_CTTGTA_R1.fastq.gz &
-fastqc  10223_3270_86380_HFWF7BGX9_12_CTTGTA_R2.fastq.gz &
 
 export PATH=/programs/adapterremoval_2.1.1/bin:$PATH
 
@@ -38,10 +34,9 @@ AdapterRemoval --file1 ./10223_3270_86375_HFWF7BGX9_7_CAGATC_R1.fastq.gz --file2
 AdapterRemoval --file1 ./10223_3270_86376_HFWF7BGX9_8_ACTTGA_R1.fastq.gz --file2 ./10223_3270_86376_HFWF7BGX9_8_ACTTGA_R2.fastq.gz --trimns --trimqualities --minquality 10 --collapse --threads 16 --adapter-list for_adapter_removal_2.txt --basename LIBRARY_8
 AdapterRemoval --file1 ./10223_3270_86377_HFWF7BGX9_9_GATCAG_R1.fastq.gz --file2 ./10223_3270_86377_HFWF7BGX9_9_GATCAG_R2.fastq.gz --trimns --trimqualities --minquality 10 --collapse --threads 16 --adapter-list for_adapter_removal_2.txt --basename LIBRARY_9
 AdapterRemoval --file1 ./10223_3270_86378_HFWF7BGX9_10_TAGCTT_R1.fastq.gz --file2 ./10223_3270_86378_HFWF7BGX9_10_TAGCTT_R2.fastq.gz --trimns --trimqualities --minquality 10 --collapse --threads 16 --adapter-list for_adapter_removal_2.txt --basename LIBRARY_10
-AdapterRemoval --file1 ./10223_3270_86379_HFWF7BGX9_11_GGCTAC_R1.fastq.gz --file2 ./10223_3270_86379_HFWF7BGX9_11_GGCTAC_R2.fastq.gz --trimns --trimqualities --minquality 10 --collapse --threads 16 --adapter-list for_adapter_removal_2.txt --basename LIBRARY_11
-AdapterRemoval --file1 ./10223_3270_86380_HFWF7BGX9_12_CTTGTA_R1.fastq.gz --file2 ./10223_3270_86380_HFWF7BGX9_12_CTTGTA_R2.fastq.gz --trimns --trimqualities --minquality 10 --collapse --threads 16 --adapter-list for_adapter_removal_2.txt --basename LIBRARY_12
 
-#second batch of individuals, genetically admix (but re-assigned according to song, see readme.txt)
+#second batch of individuals
+
 !/bin/bash
 fastqc 10750_3270_97435_HW7FCBGX9_2_CGATGT_R1.fastq.gz &
 fastqc 10750_3270_97435_HW7FCBGX9_2_CGATGT_R2.fastq.gz &
@@ -100,7 +95,6 @@ AdapterRemoval --file1 ./10750_3270_97449_HW7FCBGX9_16_CCGTCC_R1.fastq.gz --file
 AdapterRemoval --file1 ./10750_3270_97450_HW7FCBGX9_17_ATTCCT_R1.fastq.gz  --file2 ./10750_3270_97450_HW7FCBGX9_17_ATTCCT_R2.fastq.gz --trimns --trimqualities --minquality 10 --collapse --threads 16 --adapter-list for_adapter_removal_2.txt --basename LIBRARY_AD17
 AdapterRemoval --file1 ./10750_3270_97451_HW7FCBGX9_18_GTCCGC_R1.fastq.gz  --file2 ./10750_3270_97451_HW7FCBGX9_18_GTCCGC_R2.fastq.gz --trimns --trimqualities --minquality 10 --collapse --threads 16 --adapter-list for_adapter_removal_2.txt --basename LIBRARY_AD18
 AdapterRemoval --file1 ./10750_3270_97452_HW7FCBGX9_19_GTGAAA_R1.fastq.gz --file2 ./10750_3270_97452_HW7FCBGX9_19_GTGAAA_R2.fastq.gz --trimns --trimqualities --minquality 10 --collapse --threads 16 --adapter-list for_adapter_removal_2.txt --basename LIBRARY_AD19
-
 
 #last batch of individuals
 !/bin/bash
