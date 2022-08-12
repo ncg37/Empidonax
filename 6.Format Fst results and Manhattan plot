@@ -32,3 +32,17 @@ while ($parse = <I>) {
 	$count++;
 }
 
+#The resulting file is used in R to create the Manhattan plot
+
+library(qqman)
+
+fst5<-read.table("out_rush2_final_25kb_10SNP_fixed_weighted.windowed.weir.txt", header=TRUE) 
+mydf5<-data.frame(fst5)
+
+manhattan(mydf5,chr="CHR",bp="BP",p="P",snp="SNP",logp=FALSE, ylab="Fst", cex = 0.1, cex.axis = 0.5, 
+          col=c("#3D3D3D","#B0B0B0"), genomewideline=F, suggestiveline=F)
+	  
+	  
+
+
+
