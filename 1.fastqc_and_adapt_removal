@@ -1,4 +1,4 @@
-#first batch of individuals, genetically 'pure' (but re-assigned according to song, see readme.txt)
+#first batch of individuals
 
 !/bin/bash
 fastqc  10223_3270_86369_HFWF7BGX9_1_AGTCAA_R1.fastq.gz &
@@ -111,7 +111,7 @@ fastqc 11282_3270_109078_HVYFVAFXY_435_ACTGAT_R2.fastq.gz &
 fastqc 11282_3270_109079_HVYFVAFXY_446_ATTCCT_R1.fastq.gz &
 fastqc 11282_3270_109079_HVYFVAFXY_446_ATTCCT_R2.fastq.gz &
 
-export PATH=/programs/adapterremoval_2.1.1/bin:PATH   #correr el AdapterRemoval importando el path
+export PATH=/programs/adapterremoval_2.1.1/bin:PATH   
 
 AdapterRemoval --file1 ./11282_3270_109073_HVYFVAFXY_116A_ATCACG_R1.fastq.gz  --file2 ./11282_3270_109073_HVYFVAFXY_116A_ATCACG_R2.fastq.gz --trimns --trimqualities --minquality 10 --collapse --threads 6 --adapter-list for_adapter_removal_2.txt --basename LIBRARY_1
 AdapterRemoval --file1 ./11282_3270_109075_HVYFVAFXY_203_ACTTGA_R1.fastq.gz  --file2 ./11282_3270_109075_HVYFVAFXY_203_ACTTGA_R2.fastq.gz --trimns --trimqualities --minquality 10 --collapse --threads 6 --adapter-list for_adapter_removal_2.txt --basename LIBRARY_2
