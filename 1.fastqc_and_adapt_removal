@@ -1,3 +1,4 @@
+#Samples were processed in three separate batches 
 #first batch of individuals
 
 !/bin/bash
@@ -97,6 +98,7 @@ AdapterRemoval --file1 ./10750_3270_97451_HW7FCBGX9_18_GTCCGC_R1.fastq.gz  --fil
 AdapterRemoval --file1 ./10750_3270_97452_HW7FCBGX9_19_GTGAAA_R1.fastq.gz --file2 ./10750_3270_97452_HW7FCBGX9_19_GTGAAA_R2.fastq.gz --trimns --trimqualities --minquality 10 --collapse --threads 16 --adapter-list for_adapter_removal_2.txt --basename LIBRARY_AD19
 
 #last batch of individuals
+
 !/bin/bash
 fastqc 11282_3270_109073_HVYFVAFXY_116A_ATCACG_R1.fastq.gz &
 fastqc 11282_3270_109073_HVYFVAFXY_116A_ATCACG_R2.fastq.gz &
