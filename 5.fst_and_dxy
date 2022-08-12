@@ -53,8 +53,42 @@ vcftools --vcf ./final_filter_rush2.recode.vcf  --remove-filtered-all  --fst-win
 #Weir and Cockerham weighted Fst estimate: 0.067267
 #After filtering, kept 10552562 out of a possible 10552562 Sites
 
+#Fst per site
 
 vcftools --vcf ./final_filter_rush2.recode.vcf  --remove-filtered-all  --weir-fst-pop psfl --weir-fst-pop cofl --out  rush2_final_xsite &
+
+#Fst 5 kb windows for chromosomes with outlier areas
+#Create vcf files per chromosome
+
+nohup vcftools --vcf ./final_filter_rush2.recode.vcf  --chr PseudoCM012081.1_Taeniopygia_guttata_isolate_Black17_chromosome_1,_whole_genome_shotgun_sequence --remove-filtered-all --recode  --out final_filter_rush2_chr1 &
+nohup vcftools --vcf ./final_filter_rush2.recode.vcf  --chr PseudoCM012082.1_Taeniopygia_guttata_isolate_Black17_chromosome_1A,_whole_genome_shotgun_sequence --remove-filtered-all --recode  --out final_filter_rush2_chr1A &
+nohup vcftools --vcf ./final_filter_rush2.recode.vcf --chr PseudoCM012083.1_Taeniopygia_guttata_isolate_Black17_chromosome_2,_whole_genome_shotgun_sequence --remove-filtered-all  --recode  --out final_filter_rush2_chr2 &
+nohup vcftools --vcf ./final_filter_rush2.recode.vcf --chr PseudoCM012092.1_Taeniopygia_guttata_isolate_Black17_chromosome_10,_whole_genome_shotgun_sequence  --remove-filtered-all  --recode  --out final_filter_rush2_chr10 &
+nohup vcftools --vcf ./final_filter_rush2.recode.vcf --chr PseudoCM012100.1_Taeniopygia_guttata_isolate_Black17_chromosome_18,_whole_genome_shotgun_sequence  --remove-filtered-all  --recode  --out final_filter_rush2_chr18 &
+nohup vcftools --vcf ./final_filter_rush2.recode.vcf --chr PseudoCM012113.1_Taeniopygia_guttata_isolate_Black17_chromosome_Z,_whole_genome_shotgun_sequence --remove-filtered-all  --recode  --out final_filter_rush2_chr30 &
+
+nohup vcftools --vcf ./final_filter_rush2_chr1.recode.vcf  --remove-filtered-all  --fst-window-size 5000 --weir-fst-pop psfl --weir-fst-pop cofl --out  rush2_final_chr1_5kb &
+nohup vcftools --vcf ./final_filter_rush2_chr1A.recode.vcf  --remove-filtered-all  --fst-window-size 5000 --weir-fst-pop psfl --weir-fst-pop cofl --out  rush2_final_chr1A_5kb &
+nohup vcftools --vcf ./final_filter_rush2_chr2.recode.vcf  --remove-filtered-all  --fst-window-size 5000 --weir-fst-pop psfl --weir-fst-pop cofl --out  rush2_final_chr2_5kb &
+nohup vcftools --vcf ./final_filter_rush2_chr10.recode.vcf  --remove-filtered-all  --fst-window-size 5000 --weir-fst-pop psfl --weir-fst-pop cofl --out  rush2_final_chr10_5kb &
+nohup vcftools --vcf ./final_filter_rush2_chr18.recode.vcf  --remove-filtered-all  --fst-window-size 5000 --weir-fst-pop psfl --weir-fst-pop cofl --out  rush2_final_chr18_5kb &
+nohup vcftools --vcf ./final_filter_rush2_chr30.recode.vcf  --remove-filtered-all  --fst-window-size 5000 --weir-fst-pop psfl --weir-fst-pop cofl --out  rush2_final_chrZ_5kb &
+
+#TajimaD  5 kb windows for chromosomes with outlier areas
+
+nohup vcftools --vcf ./final_filter_rush2_chr1.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep psfl --out final_filter_psfl_chr1 &
+nohup vcftools --vcf ./final_filter_rush2_chr1A.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep psfl --out final_filter_psfl_chr1A &
+nohup vcftools --vcf ./final_filter_rush2_chr2.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep psfl --out final_filter_psfl_chr2 &
+nohup vcftools --vcf ./final_filter_rush2_chr10.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep psfl --out final_filter_psfl_chr10 &
+nohup vcftools --vcf ./final_filter_rush2_chr18.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep psfl --out final_filter_psfl_chr18 &
+nohup vcftools --vcf ./final_filter_rush2_chrZ.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep psfl --out final_filter_psfl_chrZ &
+
+nohup vcftools --vcf ./final_filter_rush2_chr1.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep cofl --out final_filter_cofl_chr1 &
+nohup vcftools --vcf ./final_filter_rush2_chr1A.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep cofl --out final_filter_cofl_chr1A &
+nohup vcftools --vcf ./final_filter_rush2_chr2.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep cofl --out final_filter_cofl_chr2 &
+nohup vcftools --vcf ./final_filter_rush2_chr10.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep cofl --out final_filter_cofl_chr10 &
+nohup vcftools --vcf ./final_filter_rush2_chr18.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep cofl --out final_filter_cofl_chr18 &
+nohup vcftools --vcf ./final_filter_rush2_chrZ.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep cofl --out final_filter_cofl_chrZ &
 
 #Extraction of all sites for dxy and pi analyses x chromosome
 #rush2.list is a text file listing the individual vcf files per sample, the same that were used before to create an unique vcf with all
@@ -63,35 +97,7 @@ vcftools --vcf ./final_filter_rush2.recode.vcf  --remove-filtered-all  --weir-fs
 nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012081.1_Taeniopygia_guttata_isolate_Black17_chromosome_1,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr1.vcf  -log rush2_allsites_chr1.log &
 nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012082.1_Taeniopygia_guttata_isolate_Black17_chromosome_1A,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr1A.vcf  -log rush2_allsites_chr1a.log &
 nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012083.1_Taeniopygia_guttata_isolate_Black17_chromosome_2,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr2.vcf  -log rush2_allsites_chr2.log &
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012084.1_Taeniopygia_guttata_isolate_Black17_chromosome_3,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr3.vcf  -log rush2_allsites_chr3.log &
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012085.1_Taeniopygia_guttata_isolate_Black17_chromosome_4,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr4.vcf  -log rush2_allsites_chr4.log &
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012086.1_Taeniopygia_guttata_isolate_Black17_chromosome_4A,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr4A.vcf  -log rush2_allsites_chr4A.log &
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012087.1_Taeniopygia_guttata_isolate_Black17_chromosome_5,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr5.vcf  -log rush2_allsites_chr5.log &
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012088.1_Taeniopygia_guttata_isolate_Black17_chromosome_6,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr6.vcf  -log rush2_allsites_chr6.log &
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012089.1_Taeniopygia_guttata_isolate_Black17_chromosome_7,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr7.vcf  -log rush2_allsites_chr7.log &
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012090.1_Taeniopygia_guttata_isolate_Black17_chromosome_8,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr8.vcf  -log rush2_allsites_chr8.log &
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012091.1_Taeniopygia_guttata_isolate_Black17_chromosome_9,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr9.vcf  -log rush2_allsites_chr9.log &
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012092.1_Taeniopygia_guttata_isolate_Black17_chromosome_10,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr10.vcf  -log rush2_allsites_chr10.log 
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012093.1_Taeniopygia_guttata_isolate_Black17_chromosome_11,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr11.vcf  -log rush2_allsites_chr11.log 
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012094.1_Taeniopygia_guttata_isolate_Black17_chromosome_12,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr12.vcf  -log rush2_allsites_chr12.log 
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012095.1_Taeniopygia_guttata_isolate_Black17_chromosome_13,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr13.vcf  -log rush2_allsites_chr13.log 
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012096.1_Taeniopygia_guttata_isolate_Black17_chromosome_14,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr14.vcf  -log rush2_allsites_chr14.log 
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012097.1_Taeniopygia_guttata_isolate_Black17_chromosome_15,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr15.vcf  -log rush2_allsites_ch15.log 
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012098.1_Taeniopygia_guttata_isolate_Black17_chromosome_16,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr16.vcf  -log rush2_allsites_chr16.log 
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012099.1_Taeniopygia_guttata_isolate_Black17_chromosome_17,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr17.vcf  -log rush2_allsites_chr17.log 
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012100.1_Taeniopygia_guttata_isolate_Black17_chromosome_18,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr18.vcf  -log rush2_allsites_chr18.log 
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012101.1_Taeniopygia_guttata_isolate_Black17_chromosome_19,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr19.vcf  -log rush2_allsites_chr19.log 
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012102.1_Taeniopygia_guttata_isolate_Black17_chromosome_20,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr20.vcf  -log rush2_allsites_chr20.log 
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012103.1_Taeniopygia_guttata_isolate_Black17_chromosome_21,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr21.vcf  -log rush2_allsites_chr21.log 
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012104.1_Taeniopygia_guttata_isolate_Black17_chromosome_22,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr22.vcf  -log rush2_allsites_chr22.log 
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012105.1_Taeniopygia_guttata_isolate_Black17_chromosome_23,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr23.vcf  -log rush2_allsites_chr23.log 
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012106.1_Taeniopygia_guttata_isolate_Black17_chromosome_24,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr24.vcf  -log rush2_allsites_chr24.log 
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012107.1_Taeniopygia_guttata_isolate_Black17_chromosome_25,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr25.vcf  -log rush2_allsites_chr25.log 
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012108.1_Taeniopygia_guttata_isolate_Black17_chromosome_26,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr26.vcf  -log rush2_allsites_chr26.log 
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012109.1_Taeniopygia_guttata_isolate_Black17_chromosome_29,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr29.vcf  -log rush2_allsites_chr29.log 
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012110.1_Taeniopygia_guttata_isolate_Black17_chromosome_27,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr27.vcf  -log rush2_allsites_chr27.log 
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012111.1_Taeniopygia_guttata_isolate_Black17_chromosome_30,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr30.vcf  -log rush2_allsites_chr30.log 
-nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012112.1_Taeniopygia_guttata_isolate_Black17_chromosome_28,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr28.vcf  -log rush2_allsites_chr28.log 
+nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012092.1_Taeniopygia_guttata_isolate_Black17_chromosome_10,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr10.vcf  -log rush2_allsites_chr10.log  
 nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012113.1_Taeniopygia_guttata_isolate_Black17_chromosome_Z,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chrZ.vcf  -log rush2_allsites_chrZ.log 
 
 #final filters except MQ for the chromosomes with outlier areas
@@ -108,7 +114,6 @@ nohup vcftools --vcf rush2_allsites_chr18.vcf --remove-indels --max-alleles 2 --
 nohup cat rush2_allsites.chr1.infoSites.max2allele_noindel.maxmiss80.vcf.recode.vcf | perl vcf2minmq.pl 20.0 > rush2_allsites.chr1.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf &
 nohup cat rush2_allsites.chr1A.infoSites.max2allele_noindel.maxmiss80.vcf.recode.vcf | perl vcf2minmq.pl 20.0 > rush2_allsites.chr1A.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf &
 nohup cat rush2_allsites.chr2.infoSites.max2allele_noindel.maxmiss80.vcf.recode.vcf | perl vcf2minmq.pl 20.0 > rush2_allsites.chr2.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf &
-nohup cat rush2_allsites.chr3.infoSites.max2allele_noindel.maxmiss80.vcf.recode.vcf | perl vcf2minmq.pl 20.0 > rush2_allsites.chr3.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf &
 nohup cat rush2_allsites.chrZ.infoSites.max2allele_noindel.maxmiss80.vcf.recode.vcf | perl vcf2minmq.pl 20.0 > rush2_allsites.chrZ.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf &
 nohup cat rush2_allsites.chr10.infoSites.max2allele_noindel.maxmiss80.vcf.recode.vcf| perl vcf2minmq.pl 20.0 > rush2_allsites.chr10.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf &
 nohup cat rush2_allsites.chr18.infoSites.max2allele_noindel.maxmiss80.vcf.recode.vcf| perl vcf2minmq.pl 20.0 > rush2_allsites.chr18.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf &
@@ -118,16 +123,17 @@ nohup cat rush2_allsites.chr18.infoSites.max2allele_noindel.maxmiss80.vcf.recode
 sed -i 's/,_whole_genome_shotgun_sequence//g' rush2_allsites.chr1.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf &
 sed -i 's/,_whole_genome_shotgun_sequence//g' rush2_allsites.chr1A.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf &
 sed -i 's/,_whole_genome_shotgun_sequence//g' rush2_allsites.chr2.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf &
-sed -i 's/,_whole_genome_shotgun_sequence//g' rush2_allsites.chr3.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf &
+sed -i 's/,_whole_genome_shotgun_sequence//g' rush2_allsites.chr18.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf &
 sed -i 's/,_whole_genome_shotgun_sequence//g' rush2_allsites.chr10.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf &
 sed -i 's/,_whole_genome_shotgun_sequence//g' rush2_allsites.chrZ.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf &
 
 sed -i 's/PseudoCM012081.1_Taeniopygia_guttata_isolate_Black17_//g' rush2_allsites.chr1.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf &
 sed -i 's/PseudoCM012082.1_Taeniopygia_guttata_isolate_Black17_//g' rush2_allsites.chr1A.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf & 
 sed -i 's/PseudoCM012083.1_Taeniopygia_guttata_isolate_Black17_//g' rush2_allsites.chr2.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf & 
-sed -i 's/PseudoCM012084.1_Taeniopygia_guttata_isolate_Black17_//g' rush2_allsites.chr3.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf & 
+sed -i 's/PseudoCM012084.1_Taeniopygia_guttata_isolate_Black17_//g' rush2_allsites.chr18.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf & 
 sed -i 's/PseudoCM012092.1_Taeniopygia_guttata_isolate_Black17_//g' rush2_allsites.chr10.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf & 
 sed -i 's/PseudoCM012113.1_Taeniopygia_guttata_isolate_Black17_//g' rush2_allsites.chrZ.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf &
+
 
 #Dxy by chromosome in 5 kb windows
 
