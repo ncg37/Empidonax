@@ -43,7 +43,7 @@ nohup vcftools --vcf ./removed_filtered_rush2_snps.recode.vcf --max-missing 0.8 
 #Outputting VCF file...
 #After filtering, kept 10552562 out of a possible 33104640 Sites
 
-#Fst analysis
+#Fst analysis 25 kb windows
 
 vcftools --vcf ./final_filter_rush2.recode.vcf  --remove-filtered-all  --fst-window-size 25000 --weir-fst-pop psfl --weir-fst-pop cofl --out  rush2_final_25kb &
 
@@ -57,6 +57,8 @@ vcftools --vcf ./final_filter_rush2.recode.vcf  --remove-filtered-all  --fst-win
 vcftools --vcf ./final_filter_rush2.recode.vcf  --remove-filtered-all  --weir-fst-pop psfl --weir-fst-pop cofl --out  rush2_final_xsite &
 
 #Extraction of all sites for dxy and pi analyses x chromosome
+#rush2.list is a text file listing the individual vcf files per sample, the same that were used before to create an unique vcf with all
+#pure song individuals
 
 nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012081.1_Taeniopygia_guttata_isolate_Black17_chromosome_1,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr1.vcf  -log rush2_allsites_chr1.log &
 nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012082.1_Taeniopygia_guttata_isolate_Black17_chromosome_1A,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr1A.vcf  -log rush2_allsites_chr1a.log &
@@ -92,7 +94,8 @@ nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGV
 nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012112.1_Taeniopygia_guttata_isolate_Black17_chromosome_28,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chr28.vcf  -log rush2_allsites_chr28.log 
 nohup java -Xmx100g -jar  /programs/bin/GATK/GenomeAnalysisTK.jar  -T GenotypeGVCFs -allSites  -L PseudoCM012113.1_Taeniopygia_guttata_isolate_Black17_chromosome_Z,_whole_genome_shotgun_sequence -R ./pseudochromosomes_etrailli.fasta  -l INFO -V rush2.list -o rush2_allsites_chrZ.vcf  -log rush2_allsites_chrZ.log 
 
-#final filters except MQ
+#final filters except MQ for the chromosomes with outlier areas
+
 nohup vcftools --vcf rush2_allsites_chr1.vcf --remove-indels --max-alleles 2  --max-missing 0.8 --min-meanDP 3  --recode --recode-INFO-all --out rush2_allsites.chr1.infoSites.max2allele_noindel.maxmiss80.vcf &
 nohup vcftools --vcf rush2_allsites_chr1A.vcf --remove-indels --max-alleles 2  --max-missing 0.8 --min-meanDP 3 --recode --recode-INFO-all --out  rush2_allsites.chr1A.infoSites.max2allele_noindel.maxmiss80.vcf &
 nohup vcftools --vcf rush2_allsites_chr2.vcf --remove-indels --max-alleles 2  --max-missing 0.8 --min-meanDP 3 --recode --recode-INFO-all --out rush2_allsites.chr2.infoSites.max2allele_noindel.maxmiss80.vcf &
@@ -101,6 +104,7 @@ nohup vcftools --vcf rush2_allsites_chr10.vcf --remove-indels --max-alleles 2 --
 nohup vcftools --vcf rush2_allsites_chr18.vcf --remove-indels --max-alleles 2 --max-missing 0.8 --min-meanDP 3 --recode --recode-INFO-all --out rush2_allsites.chr18.infoSites.max2allele_noindel.maxmiss80.vcf &
 
 #MQ filtering using Darren Irwin's script
+
 nohup cat rush2_allsites.chr1.infoSites.max2allele_noindel.maxmiss80.vcf.recode.vcf | perl vcf2minmq.pl 20.0 > rush2_allsites.chr1.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf &
 nohup cat rush2_allsites.chr1A.infoSites.max2allele_noindel.maxmiss80.vcf.recode.vcf | perl vcf2minmq.pl 20.0 > rush2_allsites.chr1A.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf &
 nohup cat rush2_allsites.chr2.infoSites.max2allele_noindel.maxmiss80.vcf.recode.vcf | perl vcf2minmq.pl 20.0 > rush2_allsites.chr2.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf &
@@ -125,22 +129,18 @@ sed -i 's/PseudoCM012084.1_Taeniopygia_guttata_isolate_Black17_//g' rush2_allsit
 sed -i 's/PseudoCM012092.1_Taeniopygia_guttata_isolate_Black17_//g' rush2_allsites.chr10.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf & 
 sed -i 's/PseudoCM012113.1_Taeniopygia_guttata_isolate_Black17_//g' rush2_allsites.chrZ.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf &
 
-#Dxy by chromosome
-
-python parseVCF.py -i rush2_allsites.chr10.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf  > rush2_allsites.chr10.geno &
-python popgenWindows.py -w 25000 -m 2 -g rush2_allsites.chr10.geno -o rush2_allsites.chr10.csv -f phased -T 5 -p popA -p popB --popsFile samples.txt  --windType coordinate &
+#Dxy by chromosome in 5 kb windows
 
 python parseVCF.py -i rush2_allsites.chr1.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf  > rush2_allsites.chr1.geno &
-python popgenWindows.py -w 25000 -m 2 -g rush2_allsites.chr1.geno -o rush2_allsites.chr1.csv -f phased -T 5 -p popA -p popB --popsFile samples.txt  --windType coordinate &
-
 python parseVCF.py -i rush2_allsites.chr1A.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf  > rush2_allsites.chr1A.geno &
-python popgenWindows.py -w 25000 -m 2 -g rush2_allsites.chr1A.geno -o rush2_allsites.chr1A.csv -f phased -T 5 -p popA -p popB --popsFile samples.txt  --windType coordinate &
-
 python parseVCF.py -i rush2_allsites.chr2.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf  > rush2_allsites.chr2.geno &
-python popgenWindows.py -w 25000 -m 2 -g rush2_allsites.chr2.geno -o rush2_allsites.chr2.csv -f phased -T 5 -p popA -p popB --popsFile samples.txt  --windType coordinate &
-
+python parseVCF.py -i rush2_allsites.chr10.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf  > rush2_allsites.chr10.geno
 python parseVCF.py -i rush2_allsites.chr18.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf  > rush2_allsites.chr18.geno &
-python popgenWindows.py -w 25000 -m 2 -g rush2_allsites.chr18.geno -o rush2_allsites.chr3.csv -f phased -T 5 -p popA -p popB --popsFile samples.txt  --windType coordinate &
-
 python parseVCF.py -i rush2_allsites.chrZ.infoSites.max2allele_noindel.maxmiss80.vcf.MQ20.vcf  > rush2_allsites.chrZ.geno &
-python popgenWindows.py -w 25000 -m 2 -g rush2_allsites.chrZ.geno -o rush2_allsites.chrZ.csv -f phased -T 5 -p popA -p popB --popsFile samples.txt  --windType coordinate
+
+python popgenWindows.py -w 5000 -m 2 -g rush2_allsites.chr1.geno -o rush2_allsites.chr1.5kb.csv -f phased -T 5 -p popA -p popB --popsFile samples.txt  --windType coordinate &
+python popgenWindows.py -w 5000 -m 2 -g rush2_allsites.chr1A.geno -o rush2_allsites.chr1A.5kb.csv -f phased -T 5 -p popA -p popB --popsFile samples.txt  --windType coordinate &
+python popgenWindows.py -w 5000 -m 2 -g rush2_allsites.chr2.geno -o rush2_allsites.chr2.5kb.csv -f phased -T 5 -p popA -p popB --popsFile samples.txt  --windType coordinate &
+python popgenWindows.py -w 5000 -m 2 -g rush2_allsites.chr10.geno -o rush2_allsites.chr10.5kb.csv -f phased -T 5 -p popA -p popB --popsFile samples.txt  --windType coordinate &
+python popgenWindows.py -w 5000 -m 2 -g rush2_allsites.chr18.geno -o rush2_allsites.chr18.5kb.csv -f phased -T 5 -p popA -p popB --popsFile samples.txt  --windType coordinate &
+python popgenWindows.py -w 5000 -m 2 -g rush2_allsites.chrZ.geno -o rush2_allsites.chrZ.5kb.csv -f phased -T 5 -p popA -p popB --popsFile samples.txt  --windType coordinate 
