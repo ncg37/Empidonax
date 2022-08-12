@@ -12,7 +12,7 @@
 
 $threshold = 0;
 open I, "./rush2_aligned_final_25kb_10SNP.windowed.weir.fst" or die "ERROR0: $!\n";
-open O, ">./out_rush2_final_25kb_10SNP_fixed.windowed.weir.txt" or die "ERROR2: $!\n";
+open O, ">./out_rush2_final_25kb_10SNP_fixed_weighted.windowed.weir" or die "ERROR2: $!\n";
 print O "SNP\tCHR\tBP\tP\n";
 $waste_line = <I>;
 $count = 1;
