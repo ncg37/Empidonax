@@ -1,5 +1,5 @@
 #As none of the scaffolds that failed to align to the Zebra Finch chromosomes contained outlier regions, I manually filtered the output 
-#from Fst analysis:
+#from Fst analysis resulting from previous script:
 
 #rush2_final_25kb.windowed.weir.fst
 
