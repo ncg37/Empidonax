@@ -180,7 +180,7 @@ samtools sort R19.bam -o R19ad_sorted.bam
 rm ./R19.sam
 rm ./R19.bam
 
-#here I accidentally created files with same name (in text, not in the name) as those from previous batch (see option --rg-id when running bowtie)
+#here I accidentally created files with same name (in text, not in the file name) as those from previous batch (see option --rg-id when running bowtie)
 #to correct this:
 
 sed -i 's/FORMAT\tR2/FORMAT\tR2ad/g' R2ad.g.vcf &
