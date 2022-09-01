@@ -1,0 +1,9 @@
+#Make ADMIXTURE input
+vcftools --vcf final_filter_todos.recode.vcf --plink --out final_filter_todos.plink &
+/programs/plink-1.9-x86_64-beta5/plink --file final_filter_todos.plink --make-bed --out final_filter_todos &
+
+#Run ADMIXTURE 
+export PATH=/programs/admixture_linux-1.3.0:$PATH
+
+for K in 1 2 3 4 5; \
+do /programs/admixture/admixture --cv final_filter_todos.bed $K | tee logTodos${K}.out; done &
