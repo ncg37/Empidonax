@@ -1,0 +1,107 @@
+#Create vcf with all (pure song and inter-song) individuals (34 samples) and filter
+
+nohup java -jar -Xmx100g /programs/bin/GATK/GenomeAnalysisTK.jar -nt 5 -T GenotypeGVCFs  -R ./pseudochromosomes_etrailli.fasta \
+--variant R1.g.vcf \
+--variant R2.g.vcf \
+--variant R3.g.vcf \
+--variant R4.g.vcf \
+--variant R5.g.vcf \
+--variant R6.g.vcf \
+--variant R7.g.vcf \
+--variant R8.g.vcf \
+--variant R9.g.vcf \
+--variant R10.g.vcf \
+--variant R1ad.g.vcf \
+--variant R2ad.g.vcf \
+--variant R3ad.g.vcf \
+--variant R4ad.g.vcf \
+--variant R5ad.g.vcf \
+--variant R6ad.g.vcf \
+--variant R7ad.g.vcf \
+--variant R8ad.g.vcf \
+--variant R9ad.g.vcf \
+--variant R10ad.g.vcf \
+--variant R11ad.g.vcf \
+--variant R12ad.g.vcf \
+--variant R13ad.g.vcf \
+--variant R14ad.g.vcf \
+--variant R15ad.g.vcf \
+--variant R16ad.g.vcf \
+--variant R17ad.g.vcf \
+--variant R18ad.g.vcf \
+--variant R19ad.g.vcf \
+--variant R21ad.g.vcf \
+--variant R22.g.vcf \
+--variant R23.g.vcf \
+--variant R24.g.vcf \
+--variant R25.g.vcf \
+-o UNFILTERED_TOTAL.vcf &
+
+bgzip -c UNFILTERED_TOTAL.vcf > UNFILTERED_TOTAL.vcf.gz &
+tabix -p vcf UNFILTERED_TOTAL.vcf.gz &
+nohup bcftools stats UNFILTERED_TOTAL.vcf.gz  > UNFILTERED_TOTAL.stats &
+
+nohup cp /local/workdir/ncg37/UNFILTERED_TOTAL.vcf /home/lc736_0001/ncg37/zebrafinch/RUSH2   &
+
+nohup java -jar /programs/bin/GATK/GenomeAnalysisTK.jar -T SelectVariants -R ./pseudochromosomes_etrailli.fasta  -V UNFILTERED_TOTAL.vcf -selectType SNP -o todos_snps.vcf &
+
+
+nohup java -jar /programs/bin/GATK/GenomeAnalysisTK.jar -T VariantFiltration -R ./pseudochromosomes_etrailli.fasta \
+    -V todos_snps.vcf \
+    --filterExpression "QD < 2.0 || FS > 60.0 || MQ < 20.0 || MQRankSum < -12.5 || ReadPosRankSum < -8.0" \
+    --filterName "hard_snp_filter" \
+    -o filtered_todos_snps.vcf &
+
+nohup vcftools --vcf filtered_todos_snps.vcf  --remove-filtered-all --recode --out removed_filtered_todos_snps &
+
+nohup vcftools --vcf ./removed_filtered_todos_snps.recode.vcf --max-missing 0.8 --min-meanDP 3 --mac 3 --max-meanDP 50 --min-alleles 2 --max-alleles 2 --remove-filtered-all --recode --out final_filter_todos &
+
+###PCA all individuals (Figure 2.b)###
+
+library(SNPRelate)
+library(ggplot2)
+
+snpgdsVCF2GDS(vcf.fn="./final_filter_todos.recode.vcf", out.fn="all_snps_rush2_todos.gds", method = c("biallelic.only"), compress.annotation="ZIP.max", snpfirstdim=FALSE, verbose=TRUE)
+
+snpgdsSummary("./all_snps_rush2_todos.gds")
+
+genofile <- snpgdsOpen("./all_snps_rush2_todos.gds")
+   
+pca <- snpgdsPCA(gdsobj = genofile,autosome.only=FALSE)
+
+pc.percent <- pca$varprop*100
+head(round(pc.percent, 2))
+
+tab <- data.frame(sample.id = pca$sample.id,
+                  EV1 = pca$eigenvect[,1],    # the first eigenvector
+                  EV2 = pca$eigenvect[,2],    # the second eigenvector
+                  stringsAsFactors = FALSE)
+
+
+vec <- c("admix","cofl","admix","admix","psfl","psfl","admix","admix","admix","cofl","admix","cofl","psfl","psfl","cofl","psfl","cofl","cofl","cofl","admix","admix",
+         "admix","psfl","admix","psfl","psfl","psfl","admix","cofl","admix","cofl","psfl","cofl","admix")
+
+tab2 <- cbind(tab,vec)
+
+theme_classic()
+
+p<-ggplot(tab2, aes(x=EV1, y=EV2, group=vec)) +
+  geom_point(aes(shape=vec), size = 3)+
+  geom_convexhull(alpha = 0.2)+
+  scale_shape_manual(values=c(4, 2, 1))+
+  xlab("PC1 (6.4%)") + ylab("PC2 (3.3%)") + 
+  #scale_color_manual(values=c('#999999','#E69F00', '#56B4E9'))+
+  #scale_size_manual(values=c(3,3,3))+
+  theme(legend.position="right")
+  
+###ADMIXTURE (Figure 2.c)###
+
+nohup vcftools --vcf ./final_filter_todos.recode.vcf --thin 1000 --remove-filtered-all --recode --out final_filter_todos_thinned1000 & 
+
+vcftools --vcf  final_filter_todos_thinned1000.recode.vcf  --plink --out final_filter_todos_thinned1000.plink &
+
+/programs/plink-1.9-x86_64-beta5/plink --file final_filter_todos_thinned1000.plink  --make-bed --out final_filter_todos_thinned1000 &
+
+/programs/admixture/admixture --cv final_filter_todos_thinned1000.bed 2 -j10 > final_filter_todos_thinned1000_2.out & #for two populations, pure COFL and pure PSFL song
+
+
