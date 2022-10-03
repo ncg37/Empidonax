@@ -1,3 +1,5 @@
+#This script requires files "final_filter_todos.recode.vcf" from script 8
+
 ###PCA all individuals (Figure 2.b)###
 
 library(SNPRelate)
