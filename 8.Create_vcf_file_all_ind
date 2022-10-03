@@ -55,5 +55,3 @@ nohup java -jar /programs/bin/GATK/GenomeAnalysisTK.jar -T VariantFiltration -R 
 nohup vcftools --vcf filtered_todos_snps.vcf  --remove-filtered-all --recode --out removed_filtered_todos_snps &
 
 nohup vcftools --vcf ./removed_filtered_todos_snps.recode.vcf --max-missing 0.8 --min-meanDP 3 --mac 3 --max-meanDP 50 --min-alleles 2 --max-alleles 2 --remove-filtered-all --recode --out final_filter_todos &
-
-Cre
