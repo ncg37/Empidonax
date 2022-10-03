@@ -1,0 +1,11 @@
+#This script requires files "final_filter_todos.recode.vcf" from script 8
+
+###ADMIXTURE (Figure 2.c)###
+
+nohup vcftools --vcf ./final_filter_todos.recode.vcf --thin 1000 --remove-filtered-all --recode --out final_filter_todos_thinned1000 & 
+
+vcftools --vcf  final_filter_todos_thinned1000.recode.vcf  --plink --out final_filter_todos_thinned1000.plink &
+
+/programs/plink-1.9-x86_64-beta5/plink --file final_filter_todos_thinned1000.plink  --make-bed --out final_filter_todos_thinned1000 &
+
+/programs/admixture/admixture --cv final_filter_todos_thinned1000.bed 2 -j10 > final_filter_todos_thinned1000_2.out & #for two populations, pure COFL and pure PSFL song
