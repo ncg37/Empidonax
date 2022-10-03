@@ -1,4 +1,15 @@
-#This script uses files resulting from script XX to create the panels in figure 3 b-d and in figure S1 a-b
+#The resulting file from "Format Fst results for Manhattan plot" is used here to create the Manhattan plot in Figure 3a
+
+library(qqman)
+
+fst<-read.table("out_rush2_final_25kb_10SNP_fixed_weighted.windowed.weir.txt", header=TRUE) 
+mydf5<-data.frame(fst)
+
+manhattan(mydf,chr="CHR",bp="BP",p="P",snp="SNP",logp=FALSE, ylab="Fst", cex = 0.1, cex.axis = 0.5, 
+          col=c("#3D3D3D","#B0B0B0"), genomewideline=F, suggestiveline=F)
+
+
+#This part uses files resulting from script XX to create the panels in figure 3 b-d and in figure S1 a-b
 #Outlier areas are determined based on outlier windows per chromosome (see Supplementary Table S2)
 
 library(dplyr)
