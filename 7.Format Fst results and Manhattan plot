@@ -29,7 +29,7 @@ while ($parse = <I>) {
 	$count++;
 }
 
-#The resulting file is used in R to create the Manhattan plot
+#The resulting file is used in R to create the Manhattan plot (Figure 3a)
 
 library(qqman)
 
