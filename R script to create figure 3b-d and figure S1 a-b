@@ -1,5 +1,5 @@
 #This script uses files resulting from script 5 to create the panels in figure 3
-#Focus areas are determined based on outlier areas per chromosome (see "outlier_areas.xlsx")
+#Outlier areas are determined based on outlier windows per chromosome (see Supplementary Table S2)
 
 library(dplyr)
 
@@ -95,7 +95,7 @@ filter(tajimaD, N_SNPS>1 & BIN_START >= 26950001 & BIN_START < 34100000) -> taji
 tajimaD2<-read.table("final_filter_cofl_chrZ.Tajima.D",  header = TRUE)
 filter(tajimaD2, N_SNPS>1 & BIN_START >= 26950001 & BIN_START < 34100000) -> tajima_Z_cofl
 
-#GRAPH------
+#Figure 3 b-d----
 
 #Fst+Dxy-----------
 
@@ -294,7 +294,10 @@ lines(pos2,smoothed_cofl, xlab="", ylab="", type="l", col="#63ACBE", lwd=2)
 axis(1)
 abline(h=0)
 box()
-#---------
+
+#Figure S1 a-b
+
+par(mfrow=c(2,6), mar=c(2, 2, 2, 0), oma=c(1,2,1,5))
 
 dxy1[,"pi_average"]<-((dxy1$pi_popA + dxy1$pi_popB)/2)
 model1<-lm(dxy_popA_popB ~ pi_average, data=dxy1)
