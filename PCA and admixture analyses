@@ -54,7 +54,7 @@ nohup vcftools --vcf filtered_todos_snps.vcf  --remove-filtered-all --recode --o
 
 nohup vcftools --vcf ./removed_filtered_todos_snps.recode.vcf --max-missing 0.8 --min-meanDP 3 --mac 3 --max-meanDP 50 --min-alleles 2 --max-alleles 2 --remove-filtered-all --recode --out final_filter_todos &
 
-#PCA (Figure 2.b)
+###PCA all individuals (Figure 2.b)###
 
 library(SNPRelate)
 library(ggplot2)
@@ -96,17 +96,19 @@ p<-ggplot(tab2, aes(x=EV1, y=EV2, group=vec)) +
   #scale_size_manual(values=c(3,3,3))+
   theme(legend.position="right")
   
-#ADMIXTURE (Figure 2.c)
+###ADMIXTURE (Figure 2.c)###
 
-vcftools --vcf final_filter_todos.recode.vcf --plink --out final_filter_todos.plink &
+nohup vcftools --vcf ./final_filter_todos.recode.vcf --thin 1000 --remove-filtered-all --recode --out final_filter_todos_thinned1000 & 
 
-/programs/plink-1.9-x86_64-beta5/plink --file final_filter_todos.plink --make-bed --out final_filter_todos &
+vcftools --vcf  final_filter_todos_thinned1000.recode.vcf  --plink --out final_filter_todos_thinned1000.plink &
 
-export PATH=/programs/admixture_linux-1.3.0:$PATH
+/programs/plink-1.9-x86_64-beta5/plink --file final_filter_todos_thinned1000.plink  --make-bed --out final_filter_todos_thinned1000 &
 
-/programs/admixture/admixture --cv final_filter_todos.bed 2 -j10 > final_filter_todos2.out &  #for two populations, pure COFL and pure PSFL song
+/programs/admixture/admixture --cv final_filter_todos_thinned1000.bed 2 -j10 > final_filter_todos_thinned1000_2.out & #for two populations, pure COFL and pure PSFL song
 
-#PCA per chromosome based on  near fixed SNPs that passed filters
+
+
+###PCA per chromosome based on  near fixed SNPs that passed filters (Fig 5a)###
 
 #CHR1--------
 
