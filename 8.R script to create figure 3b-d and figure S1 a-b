@@ -1,4 +1,4 @@
-#This script uses files resulting from script 5 to create the panels in figure 3
+#This script uses files resulting from script 6 to create the panels in figure 3 b-d and in figure S1 a-b
 #Outlier areas are determined based on outlier windows per chromosome (see Supplementary Table S2)
 
 library(dplyr)
