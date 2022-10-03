@@ -1,0 +1,319 @@
+nohup java -jar -Xmx100g /programs/bin/GATK/GenomeAnalysisTK.jar -nt 5 -T GenotypeGVCFs  -R ./pseudochromosomes_etrailli.fasta \
+--variant R1.g.vcf \
+--variant R2.g.vcf \
+--variant R3.g.vcf \
+--variant R4.g.vcf \
+--variant R5.g.vcf \
+--variant R6.g.vcf \
+--variant R7.g.vcf \
+--variant R8.g.vcf \
+--variant R9.g.vcf \
+--variant R10.g.vcf \
+--variant R1ad.g.vcf \
+--variant R2ad.g.vcf \
+--variant R3ad.g.vcf \
+--variant R4ad.g.vcf \
+--variant R5ad.g.vcf \
+--variant R6ad.g.vcf \
+--variant R7ad.g.vcf \
+--variant R8ad.g.vcf \
+--variant R9ad.g.vcf \
+--variant R10ad.g.vcf \
+--variant R11ad.g.vcf \
+--variant R12ad.g.vcf \
+--variant R13ad.g.vcf \
+--variant R14ad.g.vcf \
+--variant R15ad.g.vcf \
+--variant R16ad.g.vcf \
+--variant R17ad.g.vcf \
+--variant R18ad.g.vcf \
+--variant R19ad.g.vcf \
+--variant R21ad.g.vcf \
+--variant R22.g.vcf \
+--variant R23.g.vcf \
+--variant R24.g.vcf \
+--variant R25.g.vcf \
+-o UNFILTERED_TOTAL.vcf &
+
+bgzip -c UNFILTERED_TOTAL.vcf > UNFILTERED_TOTAL.vcf.gz &
+tabix -p vcf UNFILTERED_TOTAL.vcf.gz &
+nohup bcftools stats UNFILTERED_TOTAL.vcf.gz  > UNFILTERED_TOTAL.stats &
+
+nohup cp /local/workdir/ncg37/UNFILTERED_TOTAL.vcf /home/lc736_0001/ncg37/zebrafinch/RUSH2   &
+
+nohup java -jar /programs/bin/GATK/GenomeAnalysisTK.jar -T SelectVariants -R ./pseudochromosomes_etrailli.fasta  -V UNFILTERED_TOTAL.vcf -selectType SNP -o todos_snps.vcf &
+
+
+nohup java -jar /programs/bin/GATK/GenomeAnalysisTK.jar -T VariantFiltration -R ./pseudochromosomes_etrailli.fasta \
+    -V todos_snps.vcf \
+    --filterExpression "QD < 2.0 || FS > 60.0 || MQ < 20.0 || MQRankSum < -12.5 || ReadPosRankSum < -8.0" \
+    --filterName "hard_snp_filter" \
+    -o filtered_todos_snps.vcf &
+
+nohup vcftools --vcf filtered_todos_snps.vcf  --remove-filtered-all --recode --out removed_filtered_todos_snps &
+
+nohup vcftools --vcf ./removed_filtered_todos_snps.recode.vcf --max-missing 0.8 --min-meanDP 3 --mac 3 --max-meanDP 50 --min-alleles 2 --max-alleles 2 --remove-filtered-all --recode --out final_filter_todos &
+
+#PCA (Figure 2.b)
+
+library(SNPRelate)
+library(ggplot2)
+
+snpgdsVCF2GDS(vcf.fn="./final_filter_todos.recode.vcf", out.fn="all_snps_rush2_todos.gds", method = c("biallelic.only"), compress.annotation="ZIP.max", snpfirstdim=FALSE, verbose=TRUE)
+
+snpgdsSummary("./all_snps_rush2_todos.gds")
+
+genofile <- snpgdsOpen("./all_snps_rush2_todos.gds")
+   
+pca <- snpgdsPCA(gdsobj = genofile,autosome.only=FALSE)
+
+
+
+load<- snpgdsPCASNPLoading(pca, genofile)
+
+pc.percent <- pca$varprop*100
+head(round(pc.percent, 2))
+
+tab <- data.frame(sample.id = pca$sample.id,
+                  EV1 = pca$eigenvect[,1],    # the first eigenvector
+                  EV2 = pca$eigenvect[,2],    # the second eigenvector
+                  stringsAsFactors = FALSE)
+
+
+vec <- c("admix","cofl","admix","admix","psfl","psfl","admix","admix","admix","cofl","admix","cofl","psfl","psfl","cofl","psfl","cofl","cofl","cofl","admix","admix",
+         "admix","psfl","admix","psfl","psfl","psfl","admix","cofl","admix","cofl","psfl","cofl","admix")
+
+tab2 <- cbind(tab,vec)
+
+theme_classic()
+
+p<-ggplot(tab2, aes(x=EV1, y=EV2, group=vec)) +
+  geom_point(aes(shape=vec), size = 3)+
+  geom_convexhull(alpha = 0.2)+
+  scale_shape_manual(values=c(4, 2, 1))+
+  xlab("PC1 (6.4%)") + ylab("PC2 (3.3%)") + 
+  #scale_color_manual(values=c('#999999','#E69F00', '#56B4E9'))+
+  #scale_size_manual(values=c(3,3,3))+
+  theme(legend.position="right")
+  
+#ADMIXTURE (Figure 2.c)
+
+vcftools --vcf final_filter_todos.recode.vcf --plink --out final_filter_todos.plink &
+
+/programs/plink-1.9-x86_64-beta5/plink --file final_filter_todos.plink --make-bed --out final_filter_todos &
+
+export PATH=/programs/admixture_linux-1.3.0:$PATH
+
+/programs/admixture/admixture --cv final_filter_todos.bed 2 -j10 > final_filter_todos2.out &  #for two populations, pure COFL and pure PSFL song
+
+#PCA per chromosome based on  near fixed SNPs that passed filters
+
+#CHR1--------
+
+snpgdsVCF2GDS(vcf.fn="./filtered_fixedSNP_chr1.recode.vcf", out.fn="fixedSNP_chr1.gds", 
+              method = c("biallelic.only"), compress.annotation="ZIP.max", snpfirstdim=FALSE, verbose=TRUE)
+
+snpgdsSummary("./fixedSNP_chr1.gds")
+
+genofile <- snpgdsOpen("./fixedSNP_chr1.gds")
+pca <- snpgdsPCA(gdsobj = genofile,autosome.only=FALSE)
+
+pc.percent <- pca$varprop*100
+head(round(pc.percent, 2))
+
+tab <- data.frame(sample.id = pca$sample.id,
+                  EV1 = pca$eigenvect[,1],    # the first eigenvector
+                  EV2 = pca$eigenvect[,2],    # the second eigenvector
+                  stringsAsFactors = FALSE)
+                  
+vec <- c("admix","cofl","admix","admix","psfl","psfl","admix","admix","admix","cofl","admix","cofl","psfl","psfl","cofl","psfl","cofl","cofl","cofl","admix","admix",
+         "admix","psfl","admix","psfl","psfl","psfl","admix","cofl","admix","cofl","psfl","cofl","admix") 
+
+tab2_chr1 <- cbind(tab,vec)
+
+chr1<-ggplot(tab2_chr1, aes(x=EV1, y=EV2, group=vec)) +
+  geom_point(aes(color = vec, shape=vec), size=3)+
+  scale_color_manual(values=c("black", "#63ACBE", "#601A4A"))+
+  #geom_convexhull(alpha = 0.2)+
+  scale_shape_manual(values=c(1, 19, 19))+
+  ylab("") + 
+  xlab(" ")+
+  theme_bw()+  guides(color = FALSE, shape = FALSE)
+chr1
+
+#CHR1A--------
+
+snpgdsVCF2GDS(vcf.fn="./filtered_fixedSNP_chr1A.recode.vcf", out.fn="filtered_fixedSNP_chr1A.gds", 
+              method = c("biallelic.only"), compress.annotation="ZIP.max", snpfirstdim=FALSE, verbose=TRUE)
+
+snpgdsSummary("./filtered_fixedSNP_chr1A.gds")
+
+genofile <- snpgdsOpen("./filtered_fixedSNP_chr1A.gds")
+pca <- snpgdsPCA(gdsobj = genofile,autosome.only=FALSE)
+
+pc.percent <- pca$varprop*100
+head(round(pc.percent, 2))
+
+tab <- data.frame(sample.id = pca$sample.id,
+                  EV1 = pca$eigenvect[,1],    # the first eigenvector
+                  EV2 = pca$eigenvect[,2],    # the second eigenvector
+                  stringsAsFactors = FALSE)
+
+vec <- c("admix","cofl","admix","admix","psfl","psfl","admix","admix","admix","cofl","admix","cofl","psfl","psfl","cofl","psfl","cofl","cofl","cofl","admix","admix",
+         "admix","psfl","admix","psfl","psfl","psfl","admix","cofl","admix","cofl","psfl","cofl","admix") 
+
+tab2_chr1A <- cbind(tab,vec)
+
+chr1A<-ggplot(tab2_chr1A, aes(x=EV1, y=EV2, group=vec)) +
+  geom_point(aes(color = vec, shape=vec), size=3)+
+  scale_color_manual(values=c("black", "#63ACBE", "#601A4A"))+
+  #geom_convexhull(alpha = 0.2)+
+  scale_shape_manual(values=c(1, 19, 19))+
+  ylab("") + 
+  xlab(" ")+
+  theme_bw()+
+  guides(color = FALSE, shape = FALSE)
+
+chr1A
+
+#chr2--------
+snpgdsVCF2GDS(vcf.fn="./filtered_fixedSNP_chr2.recode.vcf", out.fn="filtered_fixedSNP_chr2.gds", 
+              method = c("biallelic.only"), compress.annotation="ZIP.max", snpfirstdim=FALSE, verbose=TRUE)
+
+snpgdsSummary("./filtered_fixedSNP_chr2.gds")
+
+genofile <- snpgdsOpen("./filtered_fixedSNP_chr2.gds")
+pca <- snpgdsPCA(gdsobj = genofile,autosome.only=FALSE)
+
+pc.percent <- pca$varprop*100
+head(round(pc.percent, 2))
+
+tab <- data.frame(sample.id = pca$sample.id,
+                  EV1 = pca$eigenvect[,1],    # the first eigenvector
+                  EV2 = pca$eigenvect[,2],    # the second eigenvector
+                  stringsAsFactors = FALSE)
+
+vec <- c("admix","cofl","admix","admix","psfl","psfl","admix","admix","admix","cofl","admix","cofl","psfl","psfl","cofl","psfl","cofl","cofl","cofl","admix","admix",
+         "admix","psfl","admix","psfl","psfl","psfl","admix","cofl","admix","cofl","psfl","cofl","admix") 
+
+tab2_chr2 <- cbind(tab,vec)
+
+chr2<-ggplot(tab2_chr2 , aes(x=EV1, y=EV2, group=vec)) +
+  geom_point(aes(color = vec, shape=vec), size=3)+
+  scale_color_manual(values=c("black", "#63ACBE", "#601A4A"))+
+  #geom_convexhull(alpha = 0.2)+
+  scale_shape_manual(values=c(1, 19, 19))+
+  ylab("") + 
+  xlab(" ")+
+  theme_bw()+
+  guides(color = FALSE, shape = FALSE)
+
+chr2
+
+#chr10--------
+snpgdsVCF2GDS(vcf.fn="./filtered_fixedSNP_chr10.recode.vcf", out.fn="filtered_fixedSNP_chr10.gds", 
+              method = c("biallelic.only"), compress.annotation="ZIP.max", snpfirstdim=FALSE, verbose=TRUE)
+
+snpgdsSummary("./filtered_fixedSNP_chr10.gds")
+
+genofile <- snpgdsOpen("./filtered_fixedSNP_chr10.gds")
+pca <- snpgdsPCA(gdsobj = genofile,autosome.only=FALSE)
+
+pc.percent <- pca$varprop*100
+head(round(pc.percent, 2))
+
+tab <- data.frame(sample.id = pca$sample.id,
+                  EV1 = pca$eigenvect[,1],    # the first eigenvector
+                  EV2 = pca$eigenvect[,2],    # the second eigenvector
+                  stringsAsFactors = FALSE)
+
+vec <- c("admix","cofl","admix","admix","psfl","psfl","admix","admix","admix","cofl","admix","cofl","psfl","psfl","cofl","psfl","cofl","cofl","cofl","admix","admix",
+         "admix","psfl","admix","psfl","psfl","psfl","admix","cofl","admix","cofl","psfl","cofl","admix") 
+
+tab2_chr10 <- cbind(tab,vec)
+
+chr10<-ggplot(tab2_chr10, aes(x=EV1, y=EV2, group=vec)) +
+  geom_point(aes(color = vec, shape=vec), size=3)+
+  scale_color_manual(values=c("black", "#63ACBE", "#601A4A"))+
+  #geom_convexhull(alpha = 0.2)+
+  scale_shape_manual(values=c(1, 19, 19))+
+  ylab("") + 
+  xlab(" ")+
+  theme_bw()+
+  guides(color = FALSE, shape = FALSE)
+
+chr10
+
+#chr18--------
+snpgdsVCF2GDS(vcf.fn="./filtered_fixedSNP_chr18.recode.vcf", out.fn="filtered_fixedSNP_chr18.gds", 
+              method = c("biallelic.only"), compress.annotation="ZIP.max", snpfirstdim=FALSE, verbose=TRUE)
+
+snpgdsSummary("./filtered_fixedSNP_chr18.gds")
+
+genofile <- snpgdsOpen("./filtered_fixedSNP_chr18.gds")
+pca <- snpgdsPCA(gdsobj = genofile,autosome.only=FALSE)
+
+pc.percent <- pca$varprop*100
+head(round(pc.percent, 2))
+
+tab <- data.frame(sample.id = pca$sample.id,
+                  EV1 = pca$eigenvect[,1],    # the first eigenvector
+                  EV2 = pca$eigenvect[,2],    # the second eigenvector
+                  stringsAsFactors = FALSE)
+
+vec <- c("admix","cofl","admix","admix","psfl","psfl","admix","admix","admix","cofl","admix","cofl","psfl","psfl","cofl","psfl","cofl","cofl","cofl","admix","admix",
+         "admix","psfl","admix","psfl","psfl","psfl","admix","cofl","admix","cofl","psfl","cofl","admix") 
+
+tab2_chr18 <- cbind(tab,vec)
+
+chr18<- ggplot(tab2_chr18, aes(x=EV1, y=EV2, group=vec)) +
+  geom_point(aes(color = vec, shape=vec), size=3)+
+  scale_color_manual(values=c("black", "#63ACBE", "#601A4A"))+
+  #geom_convexhull(alpha = 0.2)+
+  scale_shape_manual(values=c(1, 19, 19))+
+  ylab("") + 
+  xlab(" ")+
+  theme_bw()+  
+  guides(color = FALSE, shape = FALSE)
+
+chr18
+
+#chrZ--------
+snpgdsVCF2GDS(vcf.fn="./filtered_fixedSNP_chrZ_corrected.recode.vcf", out.fn="filtered_fixedSNP_chrZ_corr.gds", 
+              method = c("biallelic.only"), compress.annotation="ZIP.max", snpfirstdim=FALSE, verbose=TRUE)
+
+snpgdsSummary("./filtered_fixedSNP_chrZ_corr.gds")
+
+genofile <- snpgdsOpen("./filtered_fixedSNP_chrZ_corr.gds")
+pca <- snpgdsPCA(gdsobj = genofile,autosome.only=FALSE)
+
+pc.percent <- pca$varprop*100
+head(round(pc.percent, 2))
+
+tab <- data.frame(sample.id = pca$sample.id,
+                  EV1 = pca$eigenvect[,1],    # the first eigenvector
+                  EV2 = pca$eigenvect[,2],    # the second eigenvector
+                  stringsAsFactors = FALSE)
+
+vec <- c("admix","cofl","admix","admix","psfl","psfl","admix","admix","admix","cofl","admix","cofl","psfl","psfl","cofl","psfl","cofl","cofl","cofl","admix","admix",
+         "admix","psfl","admix","psfl","psfl","psfl","admix","cofl","admix","cofl","psfl","cofl","admix") 
+
+tab2_chrZ <- cbind(tab,vec)
+
+chrZ<-ggplot(tab2_chrZ, aes(x=EV1, y=EV2, group=vec)) +
+  geom_point(aes(color = vec, shape=vec), size=3)+
+  scale_color_manual(values=c("black", "#63ACBE", "#601A4A"))+
+  #geom_convexhull(alpha = 0.2)+
+  scale_shape_manual(values=c(1, 19, 19))+
+  theme(legend.position="right")+
+  ylab("") + 
+  xlab(" ")+
+  theme_bw()+
+  guides(color = FALSE, shape = FALSE)
+
+chrZ
+
+library(gridExtra)
+grid.arrange(chr1, chr1A, chr2, chr10, chr18, chrZ, nrow = 2)
+
+
