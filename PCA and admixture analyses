@@ -1,3 +1,6 @@
+#Create vcf with all (pure song and inter-song) individuals (34 samples) and filter
+
+
 nohup java -jar -Xmx100g /programs/bin/GATK/GenomeAnalysisTK.jar -nt 5 -T GenotypeGVCFs  -R ./pseudochromosomes_etrailli.fasta \
 --variant R1.g.vcf \
 --variant R2.g.vcf \
@@ -67,10 +70,6 @@ genofile <- snpgdsOpen("./all_snps_rush2_todos.gds")
    
 pca <- snpgdsPCA(gdsobj = genofile,autosome.only=FALSE)
 
-
-
-load<- snpgdsPCASNPLoading(pca, genofile)
-
 pc.percent <- pca$varprop*100
 head(round(pc.percent, 2))
 
@@ -105,7 +104,6 @@ vcftools --vcf  final_filter_todos_thinned1000.recode.vcf  --plink --out final_f
 /programs/plink-1.9-x86_64-beta5/plink --file final_filter_todos_thinned1000.plink  --make-bed --out final_filter_todos_thinned1000 &
 
 /programs/admixture/admixture --cv final_filter_todos_thinned1000.bed 2 -j10 > final_filter_todos_thinned1000_2.out & #for two populations, pure COFL and pure PSFL song
-
 
 
 ###PCA per chromosome based on  near fixed SNPs that passed filters (Fig 5a)###
