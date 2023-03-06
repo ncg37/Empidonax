@@ -34,7 +34,7 @@ p<-ggplot(tab2, aes(x=EV1, y=EV2, group=vec)) +
   geom_convexhull(alpha = 0.2)+
   scale_shape_manual(values=c(4, 2, 1))+
   xlab("PC1 (6.4%)") + ylab("PC2 (3.3%)") + 
-  #scale_color_manual(values=c('#999999','#E69F00', '#56B4E9'))+
+  #scale_color_manual(values=c('#999999','#63ACBE', '#601A4A'))+
   #scale_size_manual(values=c(3,3,3))+
   theme(legend.position="right")
   
