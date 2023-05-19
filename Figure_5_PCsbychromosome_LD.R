@@ -1,4 +1,5 @@
 ###PCA per chromosome based on  near fixed SNPs that passed filters (Fig 5a)###
+#requires vcf files from script 8
 
 library(SNPRelate)
 library(ggplot2)
@@ -192,12 +193,12 @@ chr18<- ggplot(tab2_chr18, aes(x=EV1, y=PC1_song, group=vec)) +
 chr18
 
 #chrZ--------
-snpgdsVCF2GDS(vcf.fn="./filtered_fixedSNP_chrZ_corrected.recode.vcf", out.fn="filtered_fixedSNP_chrZ_corr.gds", 
+snpgdsVCF2GDS(vcf.fn="./filtered_fixedSNP_chrZ.recode.vcf", out.fn="filtered_fixedSNP_chrZ.gds", 
               method = c("biallelic.only"), compress.annotation="ZIP.max", snpfirstdim=FALSE, verbose=TRUE)
 
-snpgdsSummary("./filtered_fixedSNP_chrZ_corr.gds")
+snpgdsSummary("./filtered_fixedSNP_chrZ.gds")
 
-genofile <- snpgdsOpen("./filtered_fixedSNP_chrZ_corr.gds")
+genofile <- snpgdsOpen("./filtered_fixedSNP_chrZ.gds")
 pca <- snpgdsPCA(gdsobj = genofile,autosome.only=FALSE)
 
 pc.percent <- pca$varprop*100
@@ -231,17 +232,5 @@ chrZ
 
 library(gridExtra)
 grid.arrange(chr1, chr1A, chr2, chr10, chr18, chrZ, nrow = 2)
-
-
-###LD analysis for near fixed SNPs for pure-song and inter-song individuals (figure 5b)###
-### Not in R
-
-vcftools --vcf final_filter_todos.recode.vcf --positions positions452.txt  --remove-filtered-all --recode --out filtered_452SNPs &
-
-vcftools --vcf filtered_452SNPs.recode.vcf  --remove-filtered-all --keep pures.sh  --recode --out filtered_452SNPs_pures &
-vcftools --vcf filtered_452SNPs.recode.vcf  --remove-filtered-all --remove pures.sh  --recode --out filtered_452SNPs_admixed &
-
-nohup /programs/plink-1.9-x86_64-beta5/plink --vcf ./filtered_452SNPs_pures.recode.vcf   --allow-extra-chr  --r2 square --out filtered_452SNPs_pures_LD &
-nohup /programs/plink-1.9-x86_64-beta5/plink --vcf ./filtered_452SNPs_admixed.recode.vcf  --allow-extra-chr  --r2 square  --out filtered_452SNPs_admix_LD &
 
 

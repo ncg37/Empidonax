@@ -55,3 +55,14 @@ nohup java -jar /programs/bin/GATK/GenomeAnalysisTK.jar -T VariantFiltration -R 
 nohup vcftools --vcf filtered_todos_snps.vcf  --remove-filtered-all --recode --out removed_filtered_todos_snps &
 
 nohup vcftools --vcf ./removed_filtered_todos_snps.recode.vcf --max-missing 0.8 --min-meanDP 3 --mac 3 --max-meanDP 50 --min-alleles 2 --max-alleles 2 --remove-filtered-all --recode --out final_filter_todos &
+
+###Creating vcf files for PCA based on near fixed SNPs per chromosome (for figure 5a)
+
+vcftools --vcf final_filter_todos.recode.vcf --positions positions452.txt  --remove-filtered-all --recode --out filtered_452SNPs &
+
+nohup vcftools --vcf filtered_452SNPs.recode.vcf --chr PseudoCM012081.1_Taeniopygia_guttata_isolate_Black17_chromosome_1,_whole_genome_shotgun_sequence  --remove-filtered-all --recode --out filtered_fixedSNP_chr1 &
+nohup vcftools --vcf filtered_452SNPs.recode.vcf --chr PseudoCM012082.1_Taeniopygia_guttata_isolate_Black17_chromosome_1A,_whole_genome_shotgun_sequence  --remove-filtered-all --recode --out filtered_fixedSNP_chr1A &
+nohup vcftools --vcf filtered_452SNPs.recode.vcf --chr PseudoCM012083.1_Taeniopygia_guttata_isolate_Black17_chromosome_2,_whole_genome_shotgun_sequence  --remove-filtered-all --recode --out filtered_fixedSNP_chr2 &
+nohup vcftools --vcf filtered_452SNPs.recode.vcf --chr PseudoCM012092.1_Taeniopygia_guttata_isolate_Black17_chromosome_10,_whole_genome_shotgun_sequence   --remove-filtered-all --recode --out filtered_fixedSNP_chr10 &
+nohup vcftools --vcf filtered_452SNPs.recode.vcf --chr PseudoCM012100.1_Taeniopygia_guttata_isolate_Black17_chromosome_18,_whole_genome_shotgun_sequence  --remove-filtered-all --recode --out filtered_fixedSNP_chr18 &
+nohup vcftools --vcf filtered_452SNPs.recode.vcf --chr PseudoCM012113.1_Taeniopygia_guttata_isolate_Black17_chromosome_Z,_whole_genome_shotgun_sequence  --remove-filtered-all --recode --out filtered_fixedSNP_chrZ &
