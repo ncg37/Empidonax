@@ -91,19 +91,19 @@ nohup vcftools --vcf ./final_filter_sinmac_rush2.recode.vcf --chr PseudoCM012113
 #TajimaD  analyses per pure song group
 #cofl and psfl are text files listing which individuals belong to each pure song group
 
-nohup vcftools --vcf ./final_filter_sinmac_rush2_chr1.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep psfl --out final_filter_psfl_chr1 &
-nohup vcftools --vcf ./final_filter_sinmac_rush2_chr1A.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep psfl --out final_filter_psfl_chr1A &
-nohup vcftools --vcf ./final_filter_sinmac_rush2_chr2.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep psfl --out final_filter_psfl_chr2 &
-nohup vcftools --vcf ./final_filter_sinmac_rush2_chr10.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep psfl --out final_filter_psfl_chr10 &
-nohup vcftools --vcf ./final_filter_sinmac_rush2_chr18.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep psfl --out final_filter_psfl_chr18 &
-nohup vcftools --vcf ./final_filter_sinmac_rush2_chrZ.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep psfl --out final_filter_psfl_chrZ &
+nohup vcftools --vcf ./final_filter_sinmac_rush2_chr1.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep psfl --out final_filter_sinmac_psfl_chr1 &
+nohup vcftools --vcf ./final_filter_sinmac_rush2_chr1A.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep psfl --out final_filter_sinmac_psfl_chr1A &
+nohup vcftools --vcf ./final_filter_sinmac_rush2_chr2.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep psfl --out final_filter_sinmac_psfl_chr2 &
+nohup vcftools --vcf ./final_filter_sinmac_rush2_chr10.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep psfl --out final_filter_sinmac_psfl_chr10 &
+nohup vcftools --vcf ./final_filter_sinmac_rush2_chr18.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep psfl --out final_filter_sinmac_psfl_chr18 &
+nohup vcftools --vcf ./final_filter_sinmac_rush2_chrZ.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep psfl --out final_filter_sinmac_psfl_chrZ &
 
-nohup vcftools --vcf ./final_filter_sinmac_rush2_chr1.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep cofl --out final_filter_cofl_chr1 &
-nohup vcftools --vcf ./final_filter_sinmac_rush2_chr1A.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep cofl --out final_filter_cofl_chr1A &
-nohup vcftools --vcf ./final_filter_sinmac_rush2_chr2.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep cofl --out final_filter_cofl_chr2 &
-nohup vcftools --vcf ./final_filter_sinmac_rush2_chr10.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep cofl --out final_filter_cofl_chr10 &
-nohup vcftools --vcf ./final_filter_sinmac_rush2_chr18.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep cofl --out final_filter_cofl_chr18 &
-nohup vcftools --vcf ./final_filter_sinmac_rush2_chrZ.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep cofl --out final_filter_cofl_chrZ &
+nohup vcftools --vcf ./final_filter_sinmac_rush2_chr1.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep cofl --out final_filter_sinmac_cofl_chr1 &
+nohup vcftools --vcf ./final_filter_sinmac_rush2_chr1A.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep cofl --out final_filter_sinmac_cofl_chr1A &
+nohup vcftools --vcf ./final_filter_sinmac_rush2_chr2.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep cofl --out final_filter_sinmac_cofl_chr2 &
+nohup vcftools --vcf ./final_filter_sinmac_rush2_chr10.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep cofl --out final_filter_sinmac_cofl_chr10 &
+nohup vcftools --vcf ./final_filter_sinmac_rush2_chr18.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep cofl --out final_filter_sinmac_cofl_chr18 &
+nohup vcftools --vcf ./final_filter_sinmac_rush2_chrZ.recode.vcf  --remove-filtered-all  --TajimaD 5000 --keep cofl --out final_filter_sinmac_cofl_chrZ &
 
 
 ###Extraction of all sites for dxy and pi analyses x chromosome###

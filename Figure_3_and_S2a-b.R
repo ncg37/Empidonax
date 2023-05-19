@@ -24,10 +24,10 @@ fst1 <-read.table("rush2_final_chr1_5kb.windowed.weir.fst", header = TRUE)
 filter(fst1, N_VARIANTS>1 & BIN_START >= 10825001 & BIN_END <= 13200000) -> fst1_pico
 
 
-tajimaD<-read.table("final_filter_psfl_chr1.Tajima.D",  header = TRUE)
+tajimaD<-read.table("final_filter_sinmac_psfl_chr1.Tajima.D",  header = TRUE)
 filter(tajimaD, N_SNPS>1 & BIN_START >= 10825001 & BIN_START < 13200000) -> tajima_1_psfl
 
-tajimaD2<-read.table("final_filter_cofl_chr1.Tajima.D",  header = TRUE)
+tajimaD2<-read.table("final_filter_sinmac_cofl_chr1.Tajima.D",  header = TRUE)
 filter(tajimaD2, N_SNPS>1 & BIN_START >= 10825001 & BIN_START < 13200000) -> tajima_1_cofl
 
 
@@ -40,10 +40,10 @@ dxy1A_pico[,"dxy100"]<-dxy1A_pico$dxy_popA_popB*100
 fst1A <-read.table("rush2_final_chr1A_5kb.windowed.weir.fst", header = TRUE)
 filter(fst1A, N_VARIANTS>1 & BIN_START >= 60775001 & BIN_END <= 63550000) -> fst1A_pico
 
-tajimaD<-read.table("final_filter_psfl_chr1A.Tajima.D",  header = TRUE)
+tajimaD<-read.table("final_filter_sinmac_psfl_chr1A.Tajima.D",  header = TRUE)
 filter(tajimaD, N_SNPS>1 & BIN_START >= 60775001 & BIN_START < 63550000) ->tajima_1A_psfl
 
-tajimaD2<-read.table("final_filter_cofl_chr1A.Tajima.D",  header = TRUE)
+tajimaD2<-read.table("final_filter_sinmac_cofl_chr1A.Tajima.D",  header = TRUE)
 filter(tajimaD2, N_SNPS>9 & BIN_START >= 60775001 & BIN_START < 63550000) -> tajima_1A_cofl
 
 #CHR2----------
@@ -55,10 +55,10 @@ dxy2_pico[,"dxy100"]<-dxy2_pico$dxy_popA_popB*100
 fst2 <-read.table("rush2_final_chr2_5kb.windowed.weir.fst", header = TRUE)
 filter(fst2, N_VARIANTS>1 & BIN_START >= 56825001 & BIN_END <= 59175000) -> fst2_pico
 
-tajimaD<-read.table("final_filter_psfl_chr2.Tajima.D",  header = TRUE)
+tajimaD<-read.table("final_filter_sinmac_psfl_chr2.Tajima.D",  header = TRUE)
 filter(tajimaD, N_SNPS>1 & BIN_START >= 56825001 & BIN_START < 59175000) -> tajima_2_psfl
 
-tajimaD2<-read.table("final_filter_cofl_chr2.Tajima.D",  header = TRUE)
+tajimaD2<-read.table("final_filter_sinmac_cofl_chr2.Tajima.D",  header = TRUE)
 filter(tajimaD2, N_SNPS>1 & BIN_START >= 56825001 & BIN_START < 59175000) -> tajima_2_cofl
 
 #CHR10---------
@@ -70,10 +70,10 @@ dxy10_pico[,"dxy100"]<-dxy10_pico$dxy_popA_popB*100
 fst10 <-read.table("rush2_final_chr10_5kb.windowed.weir.fst", header = TRUE)
 filter(fst10, N_VARIANTS>1 & BIN_START >= 19825001 & BIN_END <= 21900000) -> fst10_pico
 
-tajimaD<-read.table("final_filter_psfl_chr10.Tajima.D",  header = TRUE)
+tajimaD<-read.table("final_filter_sinmac_psfl_chr10.Tajima.D",  header = TRUE)
 filter(tajimaD, N_SNPS>1 & BIN_START >= 19825001 & BIN_START < 21900000) -> tajima_10_psfl
 
-tajimaD2<-read.table("final_filter_cofl_chr10.Tajima.D",  header = TRUE)
+tajimaD2<-read.table("final_filter_sinmac_cofl_chr10.Tajima.D",  header = TRUE)
 filter(tajimaD2, N_SNPS>1 & BIN_START >= 19825001 & BIN_START < 21900000) -> tajima_10_cofl
 
 #CHR18---------------------
@@ -85,10 +85,10 @@ dxy18_pico[,"dxy100"]<-dxy18_pico$dxy_popA_popB*100
 fst18 <-read.table("rush2_final_chr18_5kb.windowed.weir.fst", header = TRUE)
 filter(fst18, N_VARIANTS>1 & BIN_START >= 0 & BIN_END <= 1725000) -> fst18_pico
 
-tajimaD<-read.table("final_filter_psfl_chr18.Tajima.D",  header = TRUE)
+tajimaD<-read.table("final_filter_sinmac_psfl_chr18.Tajima.D",  header = TRUE)
 filter(tajimaD, N_SNPS>1 & BIN_START >= 0 & BIN_START < 1725000) -> tajima_18_psfl
 
-tajimaD2<-read.table("final_filter_cofl_chr18.Tajima.D",  header = TRUE)
+tajimaD2<-read.table("final_filter_sinmac_cofl_chr18.Tajima.D",  header = TRUE)
 filter(tajimaD2, N_SNPS>1 & BIN_START >= 0 & BIN_START < 1725000) -> tajima_18_cofl
 
 #CHRZ------------------
@@ -100,10 +100,10 @@ dxyZ_pico[,"dxy100"]<-dxyZ_pico$dxy_popA_popB*100
 fstZ <-read.table("rush2_final_chrZ_5kb.windowed.weir.fst", header = TRUE)
 filter(fstZ, N_VARIANTS>1 & BIN_START >= 26950001 & BIN_END <= 34100000) -> fstZ_pico
 
-tajimaD<-read.table("final_filter_psfl_chrZ.Tajima.D",  header = TRUE)
+tajimaD<-read.table("final_filter_sinmac_psfl_chrZ.Tajima.D",  header = TRUE)
 filter(tajimaD, N_SNPS>1 & BIN_START >= 26950001 & BIN_START < 34100000) -> tajima_Z_psfl
 
-tajimaD2<-read.table("final_filter_cofl_chrZ.Tajima.D",  header = TRUE)
+tajimaD2<-read.table("final_filter_sinmac_cofl_chrZ.Tajima.D",  header = TRUE)
 filter(tajimaD2, N_SNPS>1 & BIN_START >= 26950001 & BIN_START < 34100000) -> tajima_Z_cofl
 
 #Figure 3 b-d----
