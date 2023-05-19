@@ -1,3 +1,4 @@
+#This requires files final_filter_todos_thinned1000.2.Q from script 10 and empids_popmap_ordered
 
 require(dplyr)
 require(RColorBrewer)
