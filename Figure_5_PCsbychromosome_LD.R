@@ -234,7 +234,7 @@ grid.arrange(chr1, chr1A, chr2, chr10, chr18, chrZ, nrow = 2)
 
 
 ###LD analysis for near fixed SNPs for pure-song and inter-song individuals (figure 5b)###
-
+### Not in R
 
 vcftools --vcf final_filter_todos.recode.vcf --positions positions452.txt  --remove-filtered-all --recode --out filtered_452SNPs &
 
