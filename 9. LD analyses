@@ -1,5 +1,5 @@
 ###LD analyses###
-#requires files final_filter_todos.recode.vcf from script 8 and list of near fixed SNPs in outlier areas positions452.txt
+#requires files final_filter_todos.recode.vcf from script 8, list of near fixed SNPs in outlier areas positions452.txt and list of pure-song individuals pures.sh
 
 
 #LD analysis for near fixed SNPs in oulier areas in all chromosomes for pure-song and inter-song individuals (for figure 5b)
