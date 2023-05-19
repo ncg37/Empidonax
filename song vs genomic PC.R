@@ -4,9 +4,12 @@ vec <- as.factor(c("admix","cofl","admix","admix","psfl","psfl","admix","admix",
          "admix","psfl","admix","psfl","psfl","psfl","admix","cofl","admix","cofl","psfl","cofl","admix"))
 data[,"song_type"]<-vec
 
-model<-lm(PC1_genome~PC1_song, data= data)
+model<-lm(PC1_song~PC1_genome, data= data)
+summary(model)
 
 palette(c("#999999", "#63ACBE", "#601A4A"))
 
-plot(data$PC1_song, data$PC1_genome, col = data$song_type, pch =19, ylab="Genomic PC1", xlab="Song PC1")
+plot(data$PC1_genome, data$PC1_song, col = data$song_type, pch =19, cex=2, 
+     las=1, ylab="Song PC1", xlab="Genomic PC1")
+
 abline(model)
