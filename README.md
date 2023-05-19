@@ -51,3 +51,5 @@ Required files to run Dxy analyses by Simon Martin: https://github.com/simonhmar
 Dxy analyses pop A and pob B are text files listing the names of the samples for each population being compared (psfl and cofl in this case)
 
 Positions452.txt is the list of positions of near fixed SNPs in outlier areas (Supplementary Table S2) used to filter the vcf file for all individuals and ran analyses represented in Fig. 5
+
+

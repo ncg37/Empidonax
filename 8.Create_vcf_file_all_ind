@@ -56,7 +56,7 @@ nohup vcftools --vcf filtered_todos_snps.vcf  --remove-filtered-all --recode --o
 
 nohup vcftools --vcf ./removed_filtered_todos_snps.recode.vcf --max-missing 0.8 --min-meanDP 3 --mac 3 --max-meanDP 50 --min-alleles 2 --max-alleles 2 --remove-filtered-all --recode --out final_filter_todos &
 
-###Creating vcf files for PCA based on near fixed SNPs per chromosome (for figure 5a)
+###Creating vcf files for PCA based on near fixed SNPs per chromosome, requires list of near fixed SNPs in outlier areas positions452.txt  (for figure 5a)
 
 vcftools --vcf final_filter_todos.recode.vcf --positions positions452.txt  --remove-filtered-all --recode --out filtered_452SNPs &
 

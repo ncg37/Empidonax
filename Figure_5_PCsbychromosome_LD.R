@@ -1,4 +1,4 @@
-###PCA per chromosome based on  near fixed SNPs that passed filters (Fig 5a)###
+###PCA per chromosome based on near fixed SNPs that passed filters (Fig 5a)###
 #requires vcf files from script 8
 
 library(SNPRelate)
@@ -234,3 +234,13 @@ library(gridExtra)
 grid.arrange(chr1, chr1A, chr2, chr10, chr18, chrZ, nrow = 2)
 
 
+
+###LD analyses (Fig. 5b)----
+
+library(corrplot)
+
+fixed_pures<-as.matrix(read.table("./filtered_452SNPs_pures_LD.ld", header=F))
+fixed_admix<-as.matrix(read.table("./filtered_452SNPs_admix_LD.ld", header=F))
+
+corrplot(fixed_pures, method="color", type="lower", tl.pos='n', tl.cex=0.1, diag=F)
+corrplot(fixed_admix, method="color", type="lower", tl.pos='n', tl.cex=0.1, diag=F)
