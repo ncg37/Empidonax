@@ -9,7 +9,7 @@ manhattan(mydf,chr="CHR",bp="BP",p="P",snp="SNP",logp=FALSE, ylab="Fst", cex = 0
           col=c("#3D3D3D","#B0B0B0"), genomewideline=F, suggestiveline=F)
 
 
-#This part uses files resulting from script 6 to create the panels in figure 3 b-d and in figure S1 a-b
+#This part uses files resulting from script 6 to create the panels in figure 3 b-d and in figure S2 a-b
 #Outlier areas are determined based on outlier windows per chromosome (see Supplementary Table S2)
 
 library(dplyr)
