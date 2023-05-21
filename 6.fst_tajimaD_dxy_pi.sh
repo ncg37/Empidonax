@@ -65,7 +65,7 @@ nohup vcftools --vcf ./final_filter_rush2.recode.vcf  --chr PseudoCM012082.1_Tae
 nohup vcftools --vcf ./final_filter_rush2.recode.vcf --chr PseudoCM012083.1_Taeniopygia_guttata_isolate_Black17_chromosome_2,_whole_genome_shotgun_sequence --remove-filtered-all  --recode  --out final_filter_rush2_chr2 &
 nohup vcftools --vcf ./final_filter_rush2.recode.vcf --chr PseudoCM012092.1_Taeniopygia_guttata_isolate_Black17_chromosome_10,_whole_genome_shotgun_sequence  --remove-filtered-all  --recode  --out final_filter_rush2_chr10 &
 nohup vcftools --vcf ./final_filter_rush2.recode.vcf --chr PseudoCM012100.1_Taeniopygia_guttata_isolate_Black17_chromosome_18,_whole_genome_shotgun_sequence  --remove-filtered-all  --recode  --out final_filter_rush2_chr18 &
-nohup vcftools --vcf ./final_filter_rush2.recode.vcf --chr PseudoCM012113.1_Taeniopygia_guttata_isolate_Black17_chromosome_Z,_whole_genome_shotgun_sequence --remove-filtered-all  --recode  --out final_filter_rush2_chr30 &
+nohup vcftools --vcf ./final_filter_rush2.recode.vcf --chr PseudoCM012113.1_Taeniopygia_guttata_isolate_Black17_chromosome_Z,_whole_genome_shotgun_sequence --remove-filtered-all  --recode  --out final_filter_rush2_chrZ &
 
 nohup vcftools --vcf ./final_filter_rush2_chr1.recode.vcf  --remove-filtered-all  --fst-window-size 5000 --weir-fst-pop psfl --weir-fst-pop cofl --out  rush2_final_chr1_5kb &
 nohup vcftools --vcf ./final_filter_rush2_chr1A.recode.vcf  --remove-filtered-all  --fst-window-size 5000 --weir-fst-pop psfl --weir-fst-pop cofl --out  rush2_final_chr1A_5kb &
