@@ -2,7 +2,7 @@
 #from Fst analysis resulting from previous script (rush2_final_25kb.windowed.weir.fst) to create a new file containing only the aligned 
 #to chromosomes scaffolds, and only windows containing at least 10 SNPs:
 
-#rush2_aligned_final_25kb_10SNP.windowed.weir.txt
+#rush2_aligned_final_25kb_10SNP.windowed.weir.fst
 
 #then I adapted and run a short perl script to format the data for Manhattan plot that can be used to filter out windows based on amount of SNPs 
 #changing the threshold value as desired
